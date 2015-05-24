@@ -1,4 +1,6 @@
 var path = require('path');
+var stadisticas = require('../controllers/statistics_controller.js');
+
 
 // Postgres DATABASE_URL = postgres://user:passwd@host:port/database
 // SQLite DATABASE_URL = sqlite://:@:/
@@ -27,7 +29,16 @@ var sequelize = new Sequelize(DB_name, user, pwd,
 
 var Quiz = sequelize.import(path.join(__dirname,'quiz'));
 
+var comment_path = path.join(__dirname,'comment');
+var Comment = sequelize.import(comment_path);
+
+Comment.belongsTo(Quiz);
+Quiz.hasMany(Comment);
+
+
 exports.Quiz = Quiz; // exportar definición de tabla Quiz
+
+exports.Comment = Comment;
 
 sequelize.sync().then(function() {
 	Quiz.count().then(function (count){
@@ -39,6 +50,7 @@ sequelize.sync().then(function() {
 				respuesta: 'Lisboa'
 						})
 		.then(function(){console.log('Base de datos iniciada')});
+		stadisticas.getPreguntas(2);
 		};
 		
 	});
