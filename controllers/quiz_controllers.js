@@ -47,14 +47,12 @@ exports.edit =function(req, res){
 };
 
 exports.answer = function(req, res){
-	var resultado = 'Incorrecto';
-
-
 	if(req.query.respuesta === req.quiz.respuesta){
-		resultado = 'Correcto';
+		res.render('quizes/answer.ejs', {quiz: req.quiz, respuesta: 'correcta', errors: []});
+	}else{
+		res.render('quizes/answer.ejs', {quiz: req.quiz, respuesta: 'incorrecta.', errors: []});
 	}
-	res.render('quizes/answer', {quiz : req.quiz, respuesta: resultado, errors: []});
-
+	
 };
 //GET /quizes/new
 exports.new = function(req, res){
